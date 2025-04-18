@@ -57,4 +57,5 @@ COPY --chown=myuser:myuser . .
 EXPOSE 8000
 
 # Use ENTRYPOINT to specify the executable when the container starts.
-ENTRYPOINT ["uvicorn", "app.main:app",  "--host", "0.0.0.0", "--port", "8000", "--reload"]
+ENTRYPOINT ["/.venv/bin/uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
