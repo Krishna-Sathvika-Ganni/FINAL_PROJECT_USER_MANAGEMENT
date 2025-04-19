@@ -1,18 +1,3 @@
-"""
-File: test_database_operations.py
-
-Overview:
-This Python test file utilizes pytest to manage database states and HTTP clients for testing a web application built with FastAPI and SQLAlchemy. It includes detailed fixtures to mock the testing environment, ensuring each test is run in isolation with a consistent setup.
-
-Fixtures:
-- `async_client`: Manages an asynchronous HTTP client for testing interactions with the FastAPI application.
-- `db_session`: Handles database transactions to ensure a clean database state for each test.
-- User fixtures (`user`, `locked_user`, `verified_user`, etc.): Set up various user states to test different behaviors under diverse conditions.
-- `token`: Generates an authentication token for testing secured endpoints.
-- `initialize_database`: Prepares the database at the session start.
-- `setup_database`: Sets up and tears down the database before and after each test.
-"""
-
 # Standard library imports
 from builtins import Exception, range, str
 from datetime import timedelta
@@ -22,6 +7,7 @@ from uuid import uuid4
 # Third-party imports
 import pytest
 import pytest_asyncio
+import httpx
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -49,21 +35,30 @@ AsyncSessionScoped = scoped_session(AsyncTestingSessionLocal)
 
 @pytest_asyncio.fixture
 def email_service():
-    # Assuming the TemplateManager does not need any arguments for initialization
-    template_manager = TemplateManager()
-    email_service = EmailService(template_manager=template_manager)
-    return email_service
+    if settings.send_real_mail == 'true':
+        # Return the real email service when specifically testing email functionality
+        return EmailService()
+    else:
+        # Otherwise, use a mock to prevent actual email sending
+        mock_service = AsyncMock(spec=EmailService)
+        mock_service.send_verification_email.return_value = None
+        mock_service.send_user_email.return_value = None
+        return mock_service
 
 
 # this is what creates the http client for your api tests
 @pytest_asyncio.fixture(scope="function")
 async def async_client(db_session):
-    async with AsyncClient(app=app, base_url="http://testserver") as client:
-        app.dependency_overrides[get_db] = lambda: db_session
-        try:
-            yield client
-        finally:
-            app.dependency_overrides.clear()
+    app.dependency_overrides[get_db] = lambda: db_session
+    
+    # Using the ASGI transport properly for httpx.AsyncClient
+    async with AsyncClient(
+        base_url="http://testserver",
+        transport=httpx.ASGITransport(app=app)
+    ) as client:
+        yield client
+    
+    app.dependency_overrides.clear()
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 def initialize_database():
@@ -227,15 +222,3 @@ def manager_token(manager_user):
 def user_token(user):
     token_data = {"sub": str(user.id), "role": user.role.name}
     return create_access_token(data=token_data, expires_delta=timedelta(minutes=30))
-
-@pytest_asyncio.fixture
-def email_service():
-    if settings.send_real_mail == 'true':
-        # Return the real email service when specifically testing email functionality
-        return EmailService()
-    else:
-        # Otherwise, use a mock to prevent actual email sending
-        mock_service = AsyncMock(spec=EmailService)
-        mock_service.send_verification_email.return_value = None
-        mock_service.send_user_email.return_value = None
-        return mock_service
