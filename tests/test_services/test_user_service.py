@@ -161,3 +161,48 @@ async def test_unlock_user_account(db_session, locked_user):
     assert unlocked, "The account should be unlocked"
     refreshed_user = await UserService.get_by_id(db_session, locked_user.id)
     assert not refreshed_user.is_locked, "The user should no longer be locked"
+
+
+# Test to ensure user is NOT able to register with duplicate email
+async def test_register_no_duplicate_email(db_session, email_service): 
+    dummy_data = {
+        "email": "test_real_email@gmail.com",
+        "password": "TestPass123!",
+        "nickname": generate_nickname(),
+        "role": UserRole.ADMIN
+    }
+    user = await UserService.register_user(db_session, dummy_data, email_service)
+    assert user is not None
+    new_user = await UserService.register_user(db_session, dummy_data, email_service)
+    assert new_user is None
+
+
+# Test to ensure user is NOT able to register with duplicate nickname
+async def test_register_no_duplicate_nickname(db_session, email_service): 
+    dummy_data_1 = {
+        "email": "test_real_email_1@gmail.com",
+        "password": "TestPass123!",
+        "nickname": "static-nickname",
+        "role": UserRole.ADMIN
+    }
+    dummy_data_2 = {
+        "email": "test_real_email_2@gmail.com",
+        "password": "TestPass123!",
+        "nickname": "static-nickname",
+        "role": UserRole.ADMIN
+    }
+    user = await UserService.register_user(db_session, dummy_data_1, email_service)
+    assert user is not None
+    new_user = await UserService.register_user(db_session, dummy_data_2, email_service)
+    assert new_user is None
+
+    
+# Test to ensure user is able to register without nickname
+async def test_register_no_nickname(db_session, email_service): 
+    dummy_data = {
+        "email": "test_real_email@gmail.com",
+        "password": "TestPass123!",
+        "role": UserRole.ADMIN
+    }
+    user = await UserService.register_user(db_session, dummy_data, email_service)
+    assert user is not None
