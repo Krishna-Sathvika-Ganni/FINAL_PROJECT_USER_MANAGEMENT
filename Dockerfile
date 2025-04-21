@@ -24,7 +24,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt \
     && pip install alembic psycopg2-binary
 
 # Create a non-root user
-RUN useradd -m myuser && mkdir -p ${QR_CODE_DIR} && chown -R myuser:myuser ${QR_CODE_DIR}
+RUN useradd -m myuser
+USER myuser
 
 # Copy application code
 COPY --chown=myuser:myuser . .
@@ -32,15 +33,6 @@ COPY --chown=myuser:myuser . .
 # Expose port
 EXPOSE 8000
 
-# Create entrypoint script with migration
-RUN echo '#!/bin/bash\n\
-echo "Running migrations..."\n\
-alembic upgrade head || echo "Migration failed, continuing anyway"\n\
-echo "Starting application..."\n\
-exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload\n'\
-> /myapp/entrypoint.sh && chmod +x /myapp/entrypoint.sh && chown myuser:myuser /myapp/entrypoint.sh
+# Start app
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
-USER myuser
-
-# Start app using the entrypoint script
-CMD ["/myapp/entrypoint.sh"]
