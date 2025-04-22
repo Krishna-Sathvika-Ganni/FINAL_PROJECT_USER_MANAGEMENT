@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install Python dependencies globally
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt \
+    && pip install alembic psycopg2-binary
 
 # Create a non-root user
 RUN useradd -m myuser
@@ -34,3 +35,4 @@ EXPOSE 8000
 
 # Start app
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
