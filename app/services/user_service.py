@@ -75,16 +75,10 @@ class UserService:
             new_user.role = UserRole.ADMIN if user_count == 0 else UserRole.ANONYMOUS            
             if new_user.role == UserRole.ADMIN:
                 new_user.email_verified = True
-
-            #else:
-                # Error 1: new_user's user_id cannot be generated until it is processed into database
-                # new_user.verification_token = generate_verification_token()
-                # await email_service.send_verification_email(new_user) # Move to Line 79
             new_user.verification_token = generate_verification_token()
             session.add(new_user)
             await session.commit()
-            await email_service.send_verification_email(new_user) # Moved from 75
-            return new_user
+            await email_service.send_verification_email(new_user)
         except ValidationError as e:
             logger.error(f"Validation error during user creation: {e}")
             return None
@@ -92,7 +86,6 @@ class UserService:
     @classmethod
     async def update(cls, session: AsyncSession, user_id: UUID, update_data: Dict[str, str]) -> Optional[User]:
         try:
-            # validated_data = UserUpdate(**update_data).dict(exclude_unset=True)
             validated_data = UserUpdate(**update_data).model_dump(exclude_unset=True)
 
             if 'password' in validated_data:
@@ -101,13 +94,13 @@ class UserService:
             await cls._execute_query(session, query)
             updated_user = await cls.get_by_id(session, user_id)
             if updated_user:
-                session.refresh(updated_user)  # Explicitly refresh the updated user object
+                session.refresh(updated_user) 
                 logger.info(f"User {user_id} updated successfully.")
                 return updated_user
             else:
                 logger.error(f"User {user_id} not found after update attempt.")
             return None
-        except Exception as e:  # Broad exception handling for debugging
+        except Exception as e: 
             logger.error(f"Error during user update: {e}")
             return None
 
@@ -166,8 +159,8 @@ class UserService:
         user = await cls.get_by_id(session, user_id)
         if user:
             user.hashed_password = hashed_password
-            user.failed_login_attempts = 0  # Resetting failed login attempts
-            user.is_locked = False  # Unlocking the user account, if locked
+            user.failed_login_attempts = 0  
+            user.is_locked = False  
             session.add(user)
             await session.commit()
             return True
@@ -178,8 +171,7 @@ class UserService:
         user = await cls.get_by_id(session, user_id)
         if user and user.verification_token == token:
             user.email_verified = True
-            user.verification_token = None  # Clear the token once used
-            # user.role = UserRole.AUTHENTICATED #Error 2: sets Authenticated by default
+            user.verification_token = None  
             if user.role == UserRole.ANONYMOUS: 
                 user.role = UserRole.AUTHENTICATED
             session.add(user)
@@ -205,8 +197,7 @@ class UserService:
         user = await cls.get_by_id(session, user_id)
         if user and user.is_locked:
             user.is_locked = False
-            user.failed_login_attempts = 0  # Optionally reset failed login attempts
-            session.add(user)
+            user.failed_login_attempts = 0  
             await session.commit()
             return True
         return False
