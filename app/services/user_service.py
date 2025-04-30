@@ -3,18 +3,18 @@ from datetime import datetime, timezone
 import secrets
 from typing import Optional, Dict, List
 from pydantic import ValidationError
-from sqlalchemy import func, update, select
+from sqlalchemy import func, null, update, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
-from uuid import UUID
-import logging
-
 from app.dependencies import get_email_service, get_settings
-from app.models.user_model import User, UserRole
+from app.models.user_model import User
 from app.schemas.user_schemas import UserCreate, UserUpdate
 from app.utils.nickname_gen import generate_nickname
 from app.utils.security import generate_verification_token, hash_password, verify_password
+from uuid import UUID
 from app.services.email_service import EmailService
+from app.models.user_model import UserRole
+import logging
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
@@ -53,73 +53,50 @@ class UserService:
     async def create(cls, session: AsyncSession, user_data: Dict[str, str], email_service: EmailService) -> Optional[User]:
         try:
             validated_data = UserCreate(**user_data).model_dump()
+            existing_user = await cls.get_by_email(session, validated_data['email'])
+            if existing_user:
+                logger.error("User with given email already exists.")
+                return None
             validated_data['hashed_password'] = hash_password(validated_data.pop('password'))
             new_user = User(**validated_data)
-
-            # Ensure nickname uniqueness if not already checked
-            if not new_user.nickname:
+            new_nickname = generate_nickname()
+            while await cls.get_by_nickname(session, new_nickname):
                 new_nickname = generate_nickname()
-                while await cls.get_by_nickname(session, new_nickname):
-                    new_nickname = generate_nickname()
-                new_user.nickname = new_nickname
-
+            new_user.nickname = new_nickname
             logger.info(f"User Role: {new_user.role}")
             user_count = await cls.count(session)
-            new_user.role = UserRole.ADMIN if user_count == 0 else UserRole.ANONYMOUS
-
+            new_user.role = UserRole.ADMIN if user_count == 0 else UserRole.ANONYMOUS            
             if new_user.role == UserRole.ADMIN:
                 new_user.email_verified = True
-            else:
-                new_user.verification_token = generate_verification_token()
+
+            new_user.verification_token = generate_verification_token()
 
             session.add(new_user)
             await session.commit()
-            await email_service.send_verification_email(new_user)
             return new_user
-
         except ValidationError as e:
             logger.error(f"Validation error during user creation: {e}")
             return None
 
     @classmethod
-    async def register_user(cls, db_session: AsyncSession, user_data: dict, email_service: EmailService) -> Optional[User]:
-        # Check for duplicate email
-        existing_user = await cls.get_by_email(db_session, user_data["email"])
-        if existing_user:
-            return None
-
-        # Check for duplicate nickname if provided
-        if "nickname" in user_data and user_data["nickname"]:
-            existing_nickname_user = await cls.get_by_nickname(db_session, user_data["nickname"])
-            if existing_nickname_user:
-                return None
-
-        # Auto-generate nickname if not provided
-        if "nickname" not in user_data or not user_data["nickname"]:
-            new_nickname = generate_nickname()
-            while await cls.get_by_nickname(db_session, new_nickname):
-                new_nickname = generate_nickname()
-            user_data["nickname"] = new_nickname
-
-        return await cls.create(db_session, user_data, email_service)
-
-    @classmethod
     async def update(cls, session: AsyncSession, user_id: UUID, update_data: Dict[str, str]) -> Optional[User]:
         try:
+            # validated_data = UserUpdate(**update_data).dict(exclude_unset=True)
             validated_data = UserUpdate(**update_data).model_dump(exclude_unset=True)
+
             if 'password' in validated_data:
                 validated_data['hashed_password'] = hash_password(validated_data.pop('password'))
             query = update(User).where(User.id == user_id).values(**validated_data).execution_options(synchronize_session="fetch")
             await cls._execute_query(session, query)
             updated_user = await cls.get_by_id(session, user_id)
             if updated_user:
-                session.refresh(updated_user)
+                session.refresh(updated_user)  # Explicitly refresh the updated user object
                 logger.info(f"User {user_id} updated successfully.")
                 return updated_user
             else:
                 logger.error(f"User {user_id} not found after update attempt.")
             return None
-        except Exception as e:
+        except Exception as e:  # Broad exception handling for debugging
             logger.error(f"Error during user update: {e}")
             return None
 
@@ -140,10 +117,17 @@ class UserService:
         return result.scalars().all() if result else []
 
     @classmethod
+    async def register_user(cls, session: AsyncSession, user_data: Dict[str, str], get_email_service) -> Optional[User]:
+        return await cls.create(session, user_data, get_email_service)
+    
+
+    @classmethod
     async def login_user(cls, session: AsyncSession, email: str, password: str) -> Optional[User]:
         user = await cls.get_by_email(session, email)
         if user:
-            if user.email_verified is False or user.is_locked:
+            if user.email_verified is False:
+                return None
+            if user.is_locked:
                 return None
             if verify_password(password, user.hashed_password):
                 user.failed_login_attempts = 0
@@ -164,14 +148,15 @@ class UserService:
         user = await cls.get_by_email(session, email)
         return user.is_locked if user else False
 
+
     @classmethod
     async def reset_password(cls, session: AsyncSession, user_id: UUID, new_password: str) -> bool:
         hashed_password = hash_password(new_password)
         user = await cls.get_by_id(session, user_id)
         if user:
             user.hashed_password = hashed_password
-            user.failed_login_attempts = 0
-            user.is_locked = False
+            user.failed_login_attempts = 0  # Resetting failed login attempts
+            user.is_locked = False  # Unlocking the user account, if locked
             session.add(user)
             await session.commit()
             return True
@@ -182,7 +167,7 @@ class UserService:
         user = await cls.get_by_id(session, user_id)
         if user and user.verification_token == token:
             user.email_verified = True
-            user.verification_token = None
+            user.verification_token = None  # Clear the token once used
             user.role = UserRole.AUTHENTICATED
             session.add(user)
             await session.commit()
@@ -191,16 +176,23 @@ class UserService:
 
     @classmethod
     async def count(cls, session: AsyncSession) -> int:
+        """
+        Count the number of users in the database.
+
+        :param session: The AsyncSession instance for database access.
+        :return: The count of users.
+        """
         query = select(func.count()).select_from(User)
         result = await session.execute(query)
-        return result.scalar()
-
+        count = result.scalar()
+        return count
+    
     @classmethod
     async def unlock_user_account(cls, session: AsyncSession, user_id: UUID) -> bool:
         user = await cls.get_by_id(session, user_id)
         if user and user.is_locked:
             user.is_locked = False
-            user.failed_login_attempts = 0
+            user.failed_login_attempts = 0  # Optionally reset failed login attempts
             session.add(user)
             await session.commit()
             return True
