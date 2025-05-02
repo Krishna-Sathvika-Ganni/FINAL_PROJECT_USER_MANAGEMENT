@@ -262,6 +262,7 @@ def get_profile_picture(file_name: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 from uuid import uuid4  # Ensure this import is present
+
 @router.post("/users/me/upload-profile-picture")
 async def upload_profile_picture_endpoint(
     file: UploadFile = File(...),
@@ -271,29 +272,33 @@ async def upload_profile_picture_endpoint(
 ):
     if not file.content_type.startswith('image/'):
         raise HTTPException(status_code=400, detail="Invalid file type. Only images are allowed.")
+    
     file_data = await file.read()
     data_stream = BytesIO(file_data)
-    random_filename = uuid4()
-    user_id = current_user["user_id"]
+    
+    # Get the UUID from current_user
+    user_id = UUID(current_user["id"])  # Convert string to UUID if needed
+    
     file_extension = file.filename.split('.')[-1]
     secure_filename = f"{user_id}.{file_extension}"
-    try:
-    # Upload to MinIO with correct arguments
-        url = upload_image_to_minio(data_stream, file.content_type, secure_filename)
     
-        # Update user's profile picture URL in the database
-        user_id = current_user["user_id"]
+    try:
+        # Upload to MinIO with correct arguments
+        url = upload_image_to_minio(data_stream, file.content_type, secure_filename)
+        
+        # Update user's profile picture URL in the database using the UUID
         stmt = select(User).where(User.id == user_id)
         result = await db.execute(stmt)
         user = result.scalar_one_or_none()
+        
         if user is None:
             raise HTTPException(status_code=404, detail="User not found")
-    
+        
         user.profile_picture_url = url
         db.add(user)
         await db.commit()
         await db.refresh(user)
-    
+        
         logger.debug(f"Profile picture URL updated for user: {user.id}, URL: {user.profile_picture_url}")
         return {"message": "Profile picture uploaded successfully.", "profile_picture_url": url}
     except Exception as e:
