@@ -33,7 +33,8 @@ from app.services.jwt_service import create_access_token
 from app.utils.link_generation import create_user_links, generate_pagination_links
 from app.dependencies import get_settings
 from app.services.email_service import EmailService
-from app.utils.minio import upload_image_to_minio
+from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
+import imghdr
 from sqlalchemy.future import select
 from io import BytesIO
 from app.models.user_model import User
@@ -261,39 +262,24 @@ def get_profile_picture(file_name: str):
         return {"url": url}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-from uuid import uuid4  # Ensure this import is present
-@router.post("/users/me/upload-profile-picture")
-async def upload_profile_picture_endpoint(
-    file: UploadFile = File(...),
-    db: AsyncSession = Depends(get_db),
-    current_user: dict = Depends(get_current_user),
-    _=Depends(require_role(["ADMIN", "MANAGER", "AUTHENTICATED"]))
-):
-    if not file.content_type.startswith('image/'):
-        raise HTTPException(status_code=400, detail="Invalid file type. Only images are allowed.")
+
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/gif"}
+
+@router.post("/upload-profile-picture")
+async def upload_profile_picture(file: UploadFile = File(...)):
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=400, detail="Invalid image type. Only JPEG, PNG, and GIF are allowed.")
+    
     file_data = await file.read()
-    data_stream = BytesIO(file_data)
-    random_filename = uuid4()
-    user_id = current_user["user_id"]
-    file_extension = file.filename.split('.')[-1]
-    secure_filename = f"{user_id}.{file_extension}"
+    # Additional check using imghdr (optional but recommended)
+    if imghdr.what(None, h=file_data) not in {"jpeg", "png", "gif"}:
+        raise HTTPException(status_code=400, detail="Uploaded file is not a valid image.")
+
+    from io import BytesIO
+    buffer = BytesIO(file_data)
+
     try:
-        # Replace this with actual MinIO upload logic and URL retrieval
-        url = upload_profile_picture(data_stream, secure_filename)
-        # Update the current user's profile picture URL in the database
-        user_id = current_user["user_id"]  # Accessing the user_id from the current_user dictionary
-        stmt = select(User).where(User.id == user_id)
-        result = await db.execute(stmt)
-        user = result.scalar_one_or_none()
-        if user is None:
-            raise HTTPException(status_code=404, detail="User not found")
-        user.profile_picture_url = url
-        db.add(user)
-        await db.commit()
-        await db.refresh(user)
-        logger.debug(f"Profile picture URL updated for user: {user.id}, URL: {user.profile_picture_url}")
-        return {"message": "Profile picture uploaded successfully.", "profile_picture_url": url}
+        url = upload_image_to_minio(buffer, file.content_type, file.filename)
+        return {"url": url}
     except Exception as e:
-        await db.rollback()
-        logger.error(f"Failed to upload image: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to upload image: {str(e)}")
