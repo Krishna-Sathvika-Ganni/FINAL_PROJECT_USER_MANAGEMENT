@@ -33,8 +33,7 @@ from app.services.jwt_service import create_access_token
 from app.utils.link_generation import create_user_links, generate_pagination_links
 from app.dependencies import get_settings
 from app.services.email_service import EmailService
-
-from app.utils.minio_client import upload_profile_picture, get_profile_picture_url
+from app.utils.minio import upload_image_to_minio
 from sqlalchemy.future import select
 from io import BytesIO
 from app.models.user_model import User
