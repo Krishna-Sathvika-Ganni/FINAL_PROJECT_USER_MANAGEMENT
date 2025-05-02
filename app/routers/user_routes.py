@@ -257,7 +257,7 @@ async def verify_email(user_id: UUID, token: str, db: AsyncSession = Depends(get
 @router.get("/profile-picture/{file_name}")
 def get_profile_picture(file_name: str):
     try:
-        url = get_profile_picture_url(file_name)
+        url = upload_image_to_minio(file_name)
         return {"url": url}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -279,7 +279,7 @@ async def upload_profile_picture_endpoint(
     secure_filename = f"{user_id}.{file_extension}"
     try:
         # Replace this with actual MinIO upload logic and URL retrieval
-        url = upload_profile_picture(data_stream, secure_filename)
+        url = upload_image_to_minio(data_stream, secure_filename)
         # Update the current user's profile picture URL in the database
         user_id = current_user["user_id"]  # Accessing the user_id from the current_user dictionary
         stmt = select(User).where(User.id == user_id)
