@@ -33,7 +33,7 @@ from app.services.jwt_service import create_access_token
 from app.utils.link_generation import create_user_links, generate_pagination_links
 from app.dependencies import get_settings
 from app.services.email_service import EmailService
-from app.utils.minio import upload_image_to_minio
+from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
 from sqlalchemy.future import select
 from io import BytesIO
 from app.models.user_model import User
@@ -257,11 +257,10 @@ async def verify_email(user_id: UUID, token: str, db: AsyncSession = Depends(get
 @router.get("/profile-picture/{file_name}")
 def get_profile_picture(file_name: str):
     try:
-        url = upload_image_to_minio(file_name)
+        url = get_image_url_from_minio(file_name)
         return {"url": url}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-from uuid import uuid4  # Ensure this import is present
 
 @router.post("/users/me/upload-profile-picture")
 async def upload_profile_picture_endpoint(
