@@ -278,22 +278,23 @@ async def upload_profile_picture_endpoint(
     file_extension = file.filename.split('.')[-1]
     secure_filename = f"{user_id}.{file_extension}"
     try:
-        # Replace this with actual MinIO upload logic and URL retrieval
-        url = upload_image_to_minio(data_stream, secure_filename)
-        # Update the current user's profile picture URL in the database
-        user_id = current_user["user_id"]  # Accessing the user_id from the current_user dictionary
+    # Upload to MinIO with correct arguments
+        url = upload_image_to_minio(data_stream, file.content_type, secure_filename)
+    
+        # Update user's profile picture URL in the database
+        user_id = current_user["user_id"]
         stmt = select(User).where(User.id == user_id)
         result = await db.execute(stmt)
         user = result.scalar_one_or_none()
         if user is None:
             raise HTTPException(status_code=404, detail="User not found")
+    
         user.profile_picture_url = url
         db.add(user)
         await db.commit()
         await db.refresh(user)
+    
         logger.debug(f"Profile picture URL updated for user: {user.id}, URL: {user.profile_picture_url}")
         return {"message": "Profile picture uploaded successfully.", "profile_picture_url": url}
     except Exception as e:
-        await db.rollback()
-        logger.error(f"Failed to upload image: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to upload image: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to upload profile picture: {str(e)}")
