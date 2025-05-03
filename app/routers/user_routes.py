@@ -34,7 +34,7 @@ from app.utils.link_generation import create_user_links, generate_pagination_lin
 from app.dependencies import get_settings
 from app.services.email_service import EmailService
 from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
-import imghdr
+from PIL import Image
 from sqlalchemy.future import select
 from io import BytesIO
 from app.models.user_model import User
@@ -118,7 +118,7 @@ async def update_user(user_id: UUID, user_update: UserUpdate, request: Request, 
 
 
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT, name="delete_user", tags=["User Management Requires (Admin or Manager Roles)"])
-async def delete_user(user_id: UUID, db: AsyncSession = Depends(get_db), token: str = Depends(oauth2_scheme), current_user: dict = Depends(require_role(["ADMIN", "MANAGER"]))):
+async def delete_user(user_id: UUID, db: AsyncSession = Depends(get_db), token: str = Depends(oauth2_scheme), current_user: dict = Depends(require_role(["ADMIN", "MANAGER","AUTHENTICATED"]))):
     """
     Delete a user by their ID.
 
@@ -179,7 +179,7 @@ async def list_users(
     skip: int = 0,
     limit: int = 10,
     db: AsyncSession = Depends(get_db),
-    current_user: dict = Depends(require_role(["ADMIN", "MANAGER"]))
+    current_user: dict = Depends(require_role(["ADMIN", "MANAGER","AUTHENTICATED"]))
 ):
     total_users = await UserService.count(db)
     users = await UserService.list_users(db, skip, limit)
@@ -271,12 +271,14 @@ async def upload_profile_picture(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Invalid image type. Only JPEG, PNG, and GIF are allowed.")
     
     file_data = await file.read()
-    # Additional check using imghdr (optional but recommended)
-    if imghdr.what(None, h=file_data) not in {"jpeg", "png", "gif"}:
+    buffer = BytesIO(file_data)
+    try:
+        img = Image.open(buffer)
+        img.verify()  # Will raise an exception if not a valid image
+    except Exception:
         raise HTTPException(status_code=400, detail="Uploaded file is not a valid image.")
 
-    from io import BytesIO
-    buffer = BytesIO(file_data)
+    buffer.seek(0)
 
     try:
         url = upload_image_to_minio(buffer, file.content_type, file.filename)
