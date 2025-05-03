@@ -21,7 +21,7 @@ Key Highlights:
 from builtins import dict, int, len, str
 from datetime import timedelta
 from uuid import UUID
-from fastapi import APIRouter, Depends, HTTPException, Response, status, Request, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, Response, status, Request, UploadFile, File, Form
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.dependencies import get_current_user, get_db, get_email_service, require_role
@@ -34,8 +34,7 @@ from app.utils.link_generation import create_user_links, generate_pagination_lin
 from app.dependencies import get_settings
 from app.services.email_service import EmailService
 from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
-import imghdr
-from sqlalchemy.future import select
+from PIL import Image
 from io import BytesIO
 from app.models.user_model import User
 import logging
@@ -118,7 +117,7 @@ async def update_user(user_id: UUID, user_update: UserUpdate, request: Request, 
 
 
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT, name="delete_user", tags=["User Management Requires (Admin or Manager Roles)"])
-async def delete_user(user_id: UUID, db: AsyncSession = Depends(get_db), token: str = Depends(oauth2_scheme), current_user: dict = Depends(require_role(["ADMIN", "MANAGER"]))):
+async def delete_user(user_id: UUID, db: AsyncSession = Depends(get_db), token: str = Depends(oauth2_scheme), current_user: dict = Depends(require_role(["ADMIN", "MANAGER","AUTHENTICATED"]))):
     """
     Delete a user by their ID.
 
@@ -179,7 +178,7 @@ async def list_users(
     skip: int = 0,
     limit: int = 10,
     db: AsyncSession = Depends(get_db),
-    current_user: dict = Depends(require_role(["ADMIN", "MANAGER"]))
+    current_user: dict = Depends(require_role(["ADMIN", "MANAGER","AUTHENTICATED"]))
 ):
     total_users = await UserService.count(db)
     users = await UserService.list_users(db, skip, limit)
@@ -208,11 +207,11 @@ async def register(user_data: UserCreate, session: AsyncSession = Depends(get_db
     raise HTTPException(status_code=400, detail="Email already exists")
 
 @router.post("/login/", response_model=TokenResponse, tags=["Login and Registration"])
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_db)):
-    if await UserService.is_account_locked(session, form_data.username):
+async def login(email: str = Form(...), password: str = Form(...), session: AsyncSession = Depends(get_db)):
+    if await UserService.is_account_locked(session, email):
         raise HTTPException(status_code=400, detail="Account locked due to too many failed login attempts.")
 
-    user = await UserService.login_user(session, form_data.username, form_data.password)
+    user = await UserService.login_user(session, email, password)
     if user:
         access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
 
@@ -225,11 +224,11 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Async
     raise HTTPException(status_code=401, detail="Incorrect email or password.")
 
 @router.post("/login/", include_in_schema=False, response_model=TokenResponse, tags=["Login and Registration"])
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_db)):
-    if await UserService.is_account_locked(session, form_data.username):
+async def login(email: str = Form(...), password: str = Form(...), session: AsyncSession = Depends(get_db)):
+    if await UserService.is_account_locked(session, email):
         raise HTTPException(status_code=400, detail="Account locked due to too many failed login attempts.")
 
-    user = await UserService.login_user(session, form_data.username, form_data.password)
+    user = await UserService.login_user(session, email, password)
     if user:
         access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
 
@@ -271,12 +270,17 @@ async def upload_profile_picture(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Invalid image type. Only JPEG, PNG, and GIF are allowed.")
     
     file_data = await file.read()
-    # Additional check using imghdr (optional but recommended)
-    if imghdr.what(None, h=file_data) not in {"jpeg", "png", "gif"}:
+    buffer = BytesIO(file_data)
+
+    # Validate the file is a real image using PIL
+    try:
+        img = Image.open(buffer)
+        img.verify()  # Will raise an exception if not a valid image
+    except Exception:
         raise HTTPException(status_code=400, detail="Uploaded file is not a valid image.")
 
-    from io import BytesIO
-    buffer = BytesIO(file_data)
+    # Reset buffer position after verify
+    buffer.seek(0)
 
     try:
         url = upload_image_to_minio(buffer, file.content_type, file.filename)
