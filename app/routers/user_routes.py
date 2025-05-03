@@ -35,7 +35,6 @@ from app.dependencies import get_settings
 from app.services.email_service import EmailService
 from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
 from PIL import Image
-from sqlalchemy.future import select
 from io import BytesIO
 from app.models.user_model import User
 import logging
@@ -272,12 +271,15 @@ async def upload_profile_picture(file: UploadFile = File(...)):
     
     file_data = await file.read()
     buffer = BytesIO(file_data)
+
+    # Validate the file is a real image using PIL
     try:
         img = Image.open(buffer)
         img.verify()  # Will raise an exception if not a valid image
     except Exception:
         raise HTTPException(status_code=400, detail="Uploaded file is not a valid image.")
 
+    # Reset buffer position after verify
     buffer.seek(0)
 
     try:
