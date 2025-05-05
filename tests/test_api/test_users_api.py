@@ -191,3 +191,11 @@ async def test_list_users_unauthorized(async_client, user_token):
     assert response.status_code == 200
     assert 'items' in response.json()
 
+@pytest.mark.asyncio
+async def test_create_user_missing_email(async_client):
+    user_data = {
+        "password": "SomeSecurePassword!123"
+    }
+    response = await async_client.post("/register/", json=user_data)
+    assert response.status_code == 422
+
