@@ -199,3 +199,11 @@ async def test_create_user_missing_email(async_client):
     response = await async_client.post("/register/", json=user_data)
     assert response.status_code == 422
 
+async def test_list_users_with_pagination(async_client, admin_token):
+    params = {"limit": 2, "offset": 0}
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    response = await async_client.get("/users/", params=params, headers=headers)
+    assert response.status_code == 200
+    assert "items" in response.json()
+    assert len(response.json()["items"]) <= 2
+
