@@ -1,6 +1,9 @@
 import io
 from unittest.mock import patch, MagicMock
 from app.utils.minio import upload_image_to_minio, get_image_url_from_minio
+from unittest.mock import patch
+from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
+from app.utils.minio import upload_image_to_minio
 
 @patch("app.utils.minio.minio_client.put_object")
 def test_upload_image_to_minio(mock_put_object):
@@ -47,6 +50,7 @@ def test_custom_bucket_config(mock_uuid):
         with patch("app.utils.minio.minio_client.put_object") as mock_put_object:
             dummy_file = io.BytesIO(b"dummy image data")
             dummy_file.seek(0)
+            dummy_file.seek(0)  
             content_type = "image/jpeg"
             filename = "test.jpg"
             
@@ -75,3 +79,4 @@ def test_different_url_formats():
     assert url2 == expected_url
     assert "//test-bucket" not in url1
     assert "//test-bucket" not in url2
+
