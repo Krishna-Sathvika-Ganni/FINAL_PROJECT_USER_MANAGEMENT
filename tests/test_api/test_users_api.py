@@ -191,3 +191,12 @@ async def test_list_users_unauthorized(async_client, user_token):
     assert response.status_code == 200
     assert 'items' in response.json()
 
+@pytest.mark.asyncio
+async def test_list_users_with_pagination(async_client, admin_token):
+    params = {"limit": 2, "offset": 0}
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    response = await async_client.get("/users/", params=params, headers=headers)
+    assert response.status_code == 200
+    assert "items" in response.json()
+    assert len(response.json()["items"]) <= 2
+
