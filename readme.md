@@ -89,7 +89,7 @@ Unresolved:
 
  ![image](https://github.com/user-attachments/assets/fc5db703-8a79-45ed-9f79-6dd59b54b580)
 
-**Link to the Issue:** Mismatch of the Nickname
+**Link to the Issue:** [Mismatch of the Nickname](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/2)
 
 ###### ISSUE 2: User ID passed as None in the Verification Email
 
@@ -106,7 +106,7 @@ Resolved:
  
  ![image](https://github.com/user-attachments/assets/46ca9e6b-b7a1-4b17-834d-49096ea988c7)
 
-**Link to the Issue:** User ID passed as None in the Verification Email
+**Link to the Issue:** [User ID passed as None in the Verification Email](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/4)
 
 ###### ISSUE 3: Verification Token Missing or Invalid
 
@@ -124,7 +124,7 @@ Resolved:
  ![image](https://github.com/user-attachments/assets/4cd7bb7e-684c-47e9-a711-dc0712c404ce)
 
 
-**Link to the Issue:** Verification Token Missing or Invalid
+**Link to the Issue:** [Verification Token Missing or Invalid](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/6)
 
 ###### ISSUE 4: Role Changes from Admin to Authenticated
 
@@ -141,7 +141,7 @@ Resolved:
 
  ![image](https://github.com/user-attachments/assets/3027b72c-9bce-42db-addd-f0cfed5cbac1)
 
-**Link to the Issue:** Role Changes from Admin to Authenticated
+**Link to the Issue:** [Role Changes from Admin to Authenticated](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/8)
 
 ###### ISSUE 5: Confusing Login Prompt Asking for "Username" Instead of "Email"
 
@@ -155,7 +155,7 @@ Resolved:
 
 
 
-**Link to the Issue:** [Confusing Login Prompt Asking for "Username" Instead of "Email"]
+**Link to the Issue:** [Confusing Login Prompt Asking for "Username" Instead of "Email"](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/15)
 
 ###### ISSUE 6: Image Upload Endpoint Accepts All File Types Instead of Only Images
 
@@ -174,7 +174,7 @@ Resolved:
 ![image](https://github.com/user-attachments/assets/7d659082-93d6-48ea-9712-41cf03fa5763)
 
 
-**Link to the Issue:** Image Upload Endpoint Accepts All File Types Instead of Only Images
+**Link to the Issue:** [Image Upload Endpoint Accepts All File Types Instead of Only Images](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/13)
 
 
 #### FEATURE: 🌄 Profile Picture Upload with Minio
@@ -200,6 +200,8 @@ Resolved:
 
  ![image](https://github.com/user-attachments/assets/ea8115d1-8030-4883-a954-dcc8e665ffe2)
 
+ **Link to the Feature:** [Profile Picture Upload with Minio](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/11)
+
 #### TEST CASES:
 
 ###### TEST CASE 1: Basic Upload Functionality for Minio Image
@@ -207,70 +209,70 @@ Resolved:
 **Description:**
 - Ensures that the core image upload to Minio is working and returns a successful image URL.
 
-**Link to the Test Case:** Basic Upload Functionality for Minio Image
+**Link to the Test Case:** [Basic Upload Functionality for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/18)
 
 ###### TEST CASE 2: URL Generation for Minio Image 
 
 **Description:**
 - Ensures that the get_image_url_from_minio() function returns a valid and well-structured public image URL from a filename.
 
-**Link to the Test Case:** URL Generation for Minio Image
+**Link to the Test Case:** [URL Generation for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/19)
 
 ###### TEST CASE 3: Long Filename Handling for Minio Image
 
 **Description:**
 - Tests how the function behaves with extremely long filenames, to make sure they are correctly converted to UUID-based names.
 
-**Link to the Test Case:** Long Filename Handling for Minio Image
+**Link to the Test Case:** [Long Filename Handling for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/20)
 
 ###### TEST CASE 4: Custom Bucket Configuration for Minio Image
 
 **Description:**
 - Ensures that image uploads correctly utilize a custom bucket name if provided in the configuration.
 
-**Link to the Test Case:** Custom Bucket Configuration for Minio Image
+**Link to the Test Case:** [Custom Bucket Configuration for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/21)
 
 ###### TEST CASE 5: URL Format Variations for Minio Image
 
 **Description:**
 - Tests whether different formats of base URLs (e.g., with and without trailing slashes) are properly handled in image URL generation.
 
-**Link to the Test Case:** URL Format Variations for Minio Image
+**Link to the Test Case:** [URL Format Variations for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/22)
 
 ###### TEST CASE 6: List Users with Pagination
 
 **Description:**
 - Tests the endpoint for retrieving users with limit and offset to make sure there is proper pagination of results.
 
-**Link to the Test Case:** List Users with Pagination
+**Link to the Test Case:** [List Users with Pagination](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/23)
 
 ###### TEST CASE 7: Create User with Missing Email Field
 
 **Description:**
 - Ensures that user registration fails when the required email field is not given, ensuring proper validation.
 
-**Link to the Test Case:** Create User with Missing Email Field
+**Link to the Test Case:** [Create User with Missing Email Field](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/25)
 
 ###### TEST CASE 8: Create User with Short Password
 
 **Description:**
 - Tests that passwords shorter than the allowed length are correctly rejected when a user registers.
 
-**Link to the Test Case:** Create User with Short Password
+**Link to the Test Case:** [Create User with Short Password](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/26)
 
 ###### TEST CASE 9: Invalid Token Access
 
 **Description:**
 - Test that requests made with an invalid JWT token get blocked with correct unauthorized error.
 
-**Link to the Test Case:** Invalid Token Access
+**Link to the Test Case:** [Invalid Token Access](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/27)
 
 ###### TEST CASE 10: Unauthorized User Update Attempt
 
 **Description:**
 - Prevents a non-admin user from changing the details of another user and ensures proper access control.
 
-**Link to the Test Case:** Unauthorized User Update Attempt
+**Link to the Test Case:** [Unauthorized User Update Attempt](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/29)
 
 
 #### DOCKERHUB DEPLOYMENT:
