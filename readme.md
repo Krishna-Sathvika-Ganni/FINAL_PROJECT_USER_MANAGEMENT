@@ -1,7 +1,5 @@
 # HELLO PROFESSOR!! THIS IS MY FINAL PROJECT - USER MANAGEMENT!!
 
-# HELLO PROFESSOR!! THIS IS MY FINAL PROJECT - USER MANAGEMENT!!
-
 ## PROJECT CONTENTS:
 
 - [MY LEARNINGS FROM THIS COURSE](#my-learnings-from-this-course)
@@ -76,6 +74,20 @@
 - The issue is that the Create User API doesn't match the nickname stored in the database input to the request.
 - It is also seen as inconsistent with API reaction and example values.
 - The Nickname gets overwritten during processing, leading to inconsistencies between input, stored data and output.
+
+Unresolved:
+ 
+ ![image](https://github.com/user-attachments/assets/4aac5d33-a85f-4743-8d5e-d0cde3a7ae01)
+
+  ![image](https://github.com/user-attachments/assets/627f0c85-73e7-43c1-9a6e-dad939b292ee)
+
+  ![image](https://github.com/user-attachments/assets/722263e2-3acd-4f72-8f10-27db33f0be2c)
+
+ Resolved:
+
+![image](https://github.com/user-attachments/assets/65b65d2c-e95e-4d33-bb38-541761ecd802)
+
+ ![image](https://github.com/user-attachments/assets/fc5db703-8a79-45ed-9f79-6dd59b54b580)
 
 **Link to the Issue:** Mismatch of the Nickname
 
