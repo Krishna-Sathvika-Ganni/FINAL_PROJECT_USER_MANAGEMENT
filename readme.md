@@ -97,6 +97,15 @@ Unresolved:
 - At the time of user registration, the email verification link was generated with a None user ID.
 - Thus the email link becomes invalid or incomplete.
 
+Unresolved:
+
+ ![image](https://github.com/user-attachments/assets/54cc5165-006e-4ca9-8a13-131742286a59)
+
+
+Resolved:
+ 
+ ![image](https://github.com/user-attachments/assets/46ca9e6b-b7a1-4b17-834d-49096ea988c7)
+
 **Link to the Issue:** User ID passed as None in the Verification Email
 
 ###### ISSUE 3: Verification Token Missing or Invalid
@@ -104,6 +113,16 @@ Unresolved:
 **Description:**
 - User is getting a 400: Invalid or expired token for verification error.
 - The verification URL is also "None," i.e., token is not being generated, not being stored, or is not being placed properly inside email verification link.
+
+Unresolved:
+
+ ![image](https://github.com/user-attachments/assets/44d198f7-b193-4fc1-942a-a7b444bf52db)
+
+
+Resolved:
+
+ ![image](https://github.com/user-attachments/assets/4cd7bb7e-684c-47e9-a711-dc0712c404ce)
+
 
 **Link to the Issue:** Verification Token Missing or Invalid
 
@@ -113,15 +132,30 @@ Unresolved:
 - Whenever an admin user's email was verified, their role was automatically downgraded to "Authenticated". 
 - This access control violation was resolved by fixing the buggy logic to preserve the original role.
 
+Unresolved:
+
+ ![image](https://github.com/user-attachments/assets/331b5278-4be5-484e-b411-776ff3a684c8)
+
+
+Resolved:
+
+ ![image](https://github.com/user-attachments/assets/3027b72c-9bce-42db-addd-f0cfed5cbac1)
+
 **Link to the Issue:** Role Changes from Admin to Authenticated
 
 ###### ISSUE 5: Confusing Login Prompt Asking for "Username" Instead of "Email"
 
 **Description:**
 - The login prompt asked for a "username" when the system was looking for an email. 
-- This inconsistency caused login errors and confusion. 
+- This inconsistency caused login errors and confusion.
 
-**Link to the Issue:** Confusing Login Prompt Asking for "Username" Instead of "Email"
+Resolved:
+
+ ![image](https://github.com/user-attachments/assets/b4f86dec-5cc4-4a40-a66f-9e0a3d4acf8d)
+
+
+
+**Link to the Issue:** [Confusing Login Prompt Asking for "Username" Instead of "Email"]
 
 ###### ISSUE 6: Image Upload Endpoint Accepts All File Types Instead of Only Images
 
@@ -129,6 +163,16 @@ Unresolved:
 - The image upload endpoint was allowing any file type to be uploaded. 
 - This was not secure and violated expected behavior. 
 - The validation was updated to permit only JPEG, PNG, or WEBP image file types.
+
+Unresolved:
+
+ ![image](https://github.com/user-attachments/assets/21e50656-7ba0-4a3f-9d43-50e8a002961d)
+
+
+Resolved:
+
+![image](https://github.com/user-attachments/assets/7d659082-93d6-48ea-9712-41cf03fa5763)
+
 
 **Link to the Issue:** Image Upload Endpoint Accepts All File Types Instead of Only Images
 
@@ -142,6 +186,19 @@ Unresolved:
 
 **WORKING OF THE FEATURE:**
 
+ ![image](https://github.com/user-attachments/assets/748cf7bc-07f5-4846-be1d-de5171e59210)
+
+ ![image](https://github.com/user-attachments/assets/b725bef7-ad2c-4b63-9e57-d03d1f455832)
+
+ ![image](https://github.com/user-attachments/assets/910e0044-e077-465a-beb0-dbe077c61423)
+
+ ![image](https://github.com/user-attachments/assets/c26713f2-5e5b-4d96-8c91-08c65392b8b1)
+
+ ![image](https://github.com/user-attachments/assets/a8e1d819-8cad-4e3d-ac37-ecb6da9de1dd)
+
+ ![image](https://github.com/user-attachments/assets/83efcf35-098b-468e-b3b0-63e89e0665a7)
+
+ ![image](https://github.com/user-attachments/assets/ea8115d1-8030-4883-a954-dcc8e665ffe2)
 
 #### TEST CASES:
 
@@ -224,44 +281,137 @@ Unresolved:
 
 https://hub.docker.com/repository/docker/krisa1329/user_management/general
 
+ 
+
+![image](https://github.com/user-attachments/assets/20971005-9cf1-44fe-9c69-cb0e2c266fb0)
+
+
 
 #### WORKING OF THE PROJECT:
 
 ###### USER MANAGEMENT PAGE:
 
+![image](https://github.com/user-attachments/assets/d0499491-6c89-4fec-9142-8773e81dd1b4)
+
+ ![image](https://github.com/user-attachments/assets/adc5316c-1838-4b0f-b6bd-8d7a5cd8a417)
+
+ ![image](https://github.com/user-attachments/assets/bb909ec0-c2f0-417a-9771-161dd7bbc51e)
+
 ###### PGADMIN PAGE:
+
+ ![image](https://github.com/user-attachments/assets/8a54df7d-bdcd-4c4b-9292-a215a0ee53cd)
+
 
 ###### MINIO PAGE:
 
+ ![image](https://github.com/user-attachments/assets/6aa26d9c-ac0b-40a0-9066-712ceb8e0e90)
+
+ ![image](https://github.com/user-attachments/assets/4d8f7791-c39c-42f9-868b-b64f7b022960)
+
+
 ###### CREATION OF TABLES IN PGADMIN WITH THE COMMAND:
+
+ ![image](https://github.com/user-attachments/assets/c99c2634-b1dc-416b-9d89-4c974b213b84)
+
 
 ###### REGISTERING OF USER:
 
+ ![image](https://github.com/user-attachments/assets/b14ecd5a-f6ff-49d2-83f0-dd585d68d181)
+
+  ![image](https://github.com/user-attachments/assets/71797b34-ba7b-4057-a093-a9fcfbdaf19b)
+
+
+
 ###### REGISTERED USER STORED IN DATABASE:
+
+ ![image](https://github.com/user-attachments/assets/c1ea5acf-db88-450a-bc57-c31e34756f46)
+
 
 ###### VERIFICATION OF REGISTERED USER USING EMAIL:
 
+ ![image](https://github.com/user-attachments/assets/b6c5616c-6d6c-4982-8fb4-3b2a187da62f)
+
+ ![image](https://github.com/user-attachments/assets/7a15652d-9cce-414b-86f5-a7dcecbbf999)
+
+ 
+ ![image](https://github.com/user-attachments/assets/13c1adea-773a-43b1-9996-b22d5f2c873e)
+
 ###### LOGGING IN OF THE REGISTERED USER:
+
+ ![image](https://github.com/user-attachments/assets/7215ddc3-253b-49a4-b2e1-aa2c37a19728)
+
+ ![image](https://github.com/user-attachments/assets/6b12dff3-e216-4735-9ee4-7ae4fadcaf19)
 
 ###### AUTHORIZATION OF THE USER:
 
+ ![image](https://github.com/user-attachments/assets/f772f439-581b-4b39-a0dc-d484d6a824a8)
+
+
 ###### PROFILE PICTURE UPLOAD OF THE REGISTERED USER:
+
+ ![image](https://github.com/user-attachments/assets/a2b07264-b9cd-44c0-bb13-3717a54223e1)
+
+ ![image](https://github.com/user-attachments/assets/0f4a089d-de93-4c04-b0f3-283c0a94526e)
+
+ ![image](https://github.com/user-attachments/assets/ed8ed27a-289d-4b13-a156-14608151c3ab)
 
 ###### REGISTERING OF ANOTHER USER:
 
+ ![image](https://github.com/user-attachments/assets/489200b4-f8a3-455d-ba28-feefa25118f0)
+
+ ![image](https://github.com/user-attachments/assets/6c2195c3-a5ff-4f43-a054-63230533dca9)
+
+ ![image](https://github.com/user-attachments/assets/3696d1bc-ae3c-49ef-8129-7343398eab6a)
+
+
 ###### VERIFICATION OF ANOTHER USER:
+
+ ![image](https://github.com/user-attachments/assets/6d0abca2-4698-426e-ab1d-be5158e501c1)
+
+ ![image](https://github.com/user-attachments/assets/3e1281fa-c093-4343-9331-9905c6523338)
+
 
 ###### REGISTERED USER STORED IN DATABASE:
 
+ ![image](https://github.com/user-attachments/assets/68c60bbe-92ed-4529-90bc-dbe4a62546ad)
+
+
 ###### PROFILE PICTURE UPLOAD FOR ANOTHER USER:
+
+ ![image](https://github.com/user-attachments/assets/e5be4e6e-2183-4c8b-b230-ee513c4099f9)
 
 ###### GETTING THE USER:
 
+  ![image](https://github.com/user-attachments/assets/188fe3ba-b548-4b36-8e2c-eb920f2c4498)
+
+ ![image](https://github.com/user-attachments/assets/d9525455-1cdc-4d41-8f55-dae022455af9)
+
+
 ###### UPDATING THE USER:
+
+  ![image](https://github.com/user-attachments/assets/3b0369e9-ea11-4b95-8797-71763cca7acf)
+
+ ![image](https://github.com/user-attachments/assets/d1278035-43b3-4f71-aac5-4d8b2f14ca87)
+
+ ![image](https://github.com/user-attachments/assets/c4c9c8ed-51db-4a8b-bb86-0fe955f0306b)
+
 
 ###### LISTING THE USERS:
 
+ ![image](https://github.com/user-attachments/assets/58267699-5471-42d1-83be-fe275dde56c2)
+
+ ![image](https://github.com/user-attachments/assets/7bdca0bb-1171-41b0-a5bf-eb1da5d7482a)
+
+ ![image](https://github.com/user-attachments/assets/1676e65c-606b-41f2-8fed-b9d4654c2101)
+
 ###### DELETING THE USER:
+
+ ![image](https://github.com/user-attachments/assets/84187015-e198-490f-8248-bd6afeaca454)
+
+ ![image](https://github.com/user-attachments/assets/77a81f14-fa53-40ac-bb77-e0c712874616)
+
+ ![image](https://github.com/user-attachments/assets/33966742-f5c4-4c7f-b1d2-fdbae1cbf957)
+
 
 #### FINAL REMARKS:
 
