@@ -37,3 +37,23 @@ def test_unicode_filename(mock_put_object, mock_uuid):
     assert "テスト" not in url
     assert "🌟" not in url
 
+@patch("app.utils.minio.uuid.uuid4")
+def test_custom_bucket_config(mock_uuid):
+    mock_uuid.return_value = "test-custom-bucket-uuid"
+
+    with patch("app.utils.minio.settings") as mock_settings:
+        mock_settings.minio_bucket_name = "custom-test-bucket"
+        mock_settings.minio_base_url = "https://custom-minio.example.com"
+        
+        with patch("app.utils.minio.minio_client.put_object") as mock_put_object:
+            dummy_file = io.BytesIO(b"dummy image data")
+            dummy_file.seek(0)  
+            content_type = "image/jpeg"
+            filename = "test.jpg"
+            
+            url = upload_image_to_minio(dummy_file, content_type, filename)
+    
+    assert "custom-minio.example.com" in url
+    assert "custom-test-bucket" in url
+    assert "test-custom-bucket-uuid.jpg" in url
+
