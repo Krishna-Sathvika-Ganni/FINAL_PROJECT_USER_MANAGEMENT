@@ -205,6 +205,13 @@ async def test_invalid_token(async_client):
     headers = {"Authorization": "Bearer invalid.token.here"}
     response = await async_client.get("/users/", headers=headers)
     assert response.status_code in [401, 403]
+
+@pytest.mark.asyncio
+async def test_user_cannot_update_other_user(async_client, verified_user, user_token):
+    updated_data = {"email": "newemail@example.com"}
+    headers = {"Authorization": f"Bearer {user_token}"}
+    response = await async_client.put(f"/users/{verified_user.id}", json=updated_data, headers=headers)
+    assert response.status_code == 403
     
 async def test_create_user_missing_email(async_client):
     user_data = {
@@ -220,4 +227,3 @@ async def test_list_users_with_pagination(async_client, admin_token):
     assert response.status_code == 200
     assert "items" in response.json()
     assert len(response.json()["items"]) <= 2
-
