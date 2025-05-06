@@ -2,7 +2,7 @@
 
 ## PROJECT CONTENTS:
 
- [📝 MY LEARNINGS FROM THIS COURSE](#-my-learnings-from-this-course)
+- [📝 MY LEARNINGS FROM THIS COURSE](#-my-learnings-from-this-course)
 - [💼 MY EXPERIENCE WORKING ON THIS PROJECT](#-my-experience-working-on-this-project)
 - [🛠️ PROJECT SETUP](#-project-setup)
 - [🐞 QA ISSUES](#-qa-issues)
@@ -31,6 +31,7 @@
 
 
 #### 📝 MY LEARNINGS FROM THIS COURSE
+
 - I have learned many practical skills in this course, starting with how to use GitHub effectively for version control and collaboration. 
 - The course introduced me to a lot of tools and ideas that I did not know about before, and made me learn a lot more about building, testing, and deploying realistic applications.
 - The midterm calculator project was a stepping block that enabled me to get acquainted with the development process and prepare myself for the challenges of this Epic User Management project.
@@ -43,21 +44,15 @@
 
 #### 🛠️ PROJECT SETUP:
 
-1. **FORK AND CLONE THE REPOSITORY**
-
-```git clone https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT.git``` 
+1. **FORK AND CLONE THE REPOSITORY**: ```git clone https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT.git``` 
 
 2. **ENVIRONMENT CONFIGURATION:**
     - Create a local `.env` file.
     - And add the MailTrap SMTP settings for testing email features
 
-3. **DATABASE MIGRATION:**
+3. **DATABASE MIGRATION:** ```docker compose exec fastapi alembic upgrade head```
 
-```docker compose exec fastapi alembic upgrade head```
-
-4. **Start the project with Docker**
-
-```docker compose up --build```
+4. **Start the project with Docker**: ```docker compose up --build```
 
 5. **ACCESS POINTS**
 
@@ -67,13 +62,9 @@
 
 6. **USEFUL COMMANDS**
 
-- To view logs for FastAPI service: 
+- **To view logs for FastAPI service:** ```docker compose logs fastapi -f```
 
-```docker compose logs fastapi -f```
-
-- Execute all tests inside the container: 
-
-```docker compose exec fastapi pytest```
+- **Execute all tests inside the container:** ```docker compose exec fastapi pytest```
 
 
 #### 🐞 QA ISSUES:
@@ -86,25 +77,25 @@
 - The Nickname gets overwritten during processing, leading to inconsistencies between input, stored data and output.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/4aac5d33-a85f-4743-8d5e-d0cde3a7ae01" width="650"/>
+  <img src="https://github.com/user-attachments/assets/4aac5d33-a85f-4743-8d5e-d0cde3a7ae01"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/627f0c85-73e7-43c1-9a6e-dad939b292ee" width="650"/>
+  <img src="https://github.com/user-attachments/assets/627f0c85-73e7-43c1-9a6e-dad939b292ee"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/722263e2-3acd-4f72-8f10-27db33f0be2c" width="650"/>
+  <img src="https://github.com/user-attachments/assets/722263e2-3acd-4f72-8f10-27db33f0be2c"/>
 </p>
 
-Resolved Issue:
+**Resolved Issue:**
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/65b65d2c-e95e-4d33-bb38-541761ecd802" width="650"/>
+  <img src="https://github.com/user-attachments/assets/65b65d2c-e95e-4d33-bb38-541761ecd802"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fc5db703-8a79-45ed-9f79-6dd59b54b580" width="650"/>
+  <img src="https://github.com/user-attachments/assets/fc5db703-8a79-45ed-9f79-6dd59b54b580"/>
 </p>
 
 **Link to the Issue:** [Mismatch of the Nickname](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/2)
@@ -115,15 +106,16 @@ Resolved Issue:
 - At the time of user registration, the email verification link was generated with a None user ID.
 - Thus the email link becomes invalid or incomplete.
 
-Unresolved:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/54cc5165-006e-4ca9-8a13-131742286a59"/>
+</p>
 
- ![image](https://github.com/user-attachments/assets/54cc5165-006e-4ca9-8a13-131742286a59)
+**Resolved Issue:**
 
-
-Resolved:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/46ca9e6b-b7a1-4b17-834d-49096ea988c7"/>
+</p>
  
- ![image](https://github.com/user-attachments/assets/46ca9e6b-b7a1-4b17-834d-49096ea988c7)
-
 **Link to the Issue:** [User ID passed as None in the Verification Email](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/4)
 
 ###### 🔑 ISSUE 3: Verification Token Missing or Invalid
