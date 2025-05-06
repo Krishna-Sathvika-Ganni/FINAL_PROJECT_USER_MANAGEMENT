@@ -1,6 +1,7 @@
 import io
 from unittest.mock import patch
 from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
+from app.utils.minio import upload_image_to_minio
 
 @patch("app.utils.minio.minio_client.put_object")
 def test_upload_image_to_minio(mock_put_object):
@@ -13,7 +14,7 @@ def test_upload_image_to_minio(mock_put_object):
 
     assert url.endswith(".jpg")
     mock_put_object.assert_called_once()
-    
+
 def test_get_image_url_from_minio():
     file_name = "example.jpg"
     url = get_image_url_from_minio(file_name)
@@ -55,3 +56,4 @@ def test_custom_bucket_config(mock_uuid):
     assert "custom-minio.example.com" in url
     assert "custom-test-bucket" in url
     assert "test-custom-bucket-uuid.jpg" in url
+
