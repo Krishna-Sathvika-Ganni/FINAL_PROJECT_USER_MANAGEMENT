@@ -1,6 +1,7 @@
 import io
 from unittest.mock import patch
 from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
+from app.utils.minio import upload_image_to_minio
 
 @patch("app.utils.minio.minio_client.put_object")
 def test_upload_image_to_minio(mock_put_object):
