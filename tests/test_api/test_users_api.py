@@ -199,6 +199,12 @@ async def test_create_user_short_password(async_client):
     }
     response = await async_client.post("/register/", json=user_data)
     assert response.status_code == 422
+
+@pytest.mark.asyncio
+async def test_invalid_token(async_client):
+    headers = {"Authorization": "Bearer invalid.token.here"}
+    response = await async_client.get("/users/", headers=headers)
+    assert response.status_code in [401, 403]
     
 async def test_create_user_missing_email(async_client):
     user_data = {
