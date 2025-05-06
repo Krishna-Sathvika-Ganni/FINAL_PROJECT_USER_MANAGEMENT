@@ -21,3 +21,19 @@ def test_get_image_url_from_minio():
 
     assert file_name in url
     assert url.startswith("http") or url.startswith("https")
+
+@patch("app.utils.minio.uuid.uuid4")
+@patch("app.utils.minio.minio_client.put_object")
+def test_unicode_filename(mock_put_object, mock_uuid):
+    mock_uuid.return_value = "test-unicode-uuid"
+    dummy_file = io.BytesIO(b"dummy image data")
+    content_type = "image/jpeg"
+    filename = "unicode_テスト_🌟.jpg"
+    
+    url = upload_image_to_minio(dummy_file, content_type, filename)
+    
+    mock_put_object.assert_called_once()
+    assert "test-unicode-uuid.jpg" in url
+    assert "テスト" not in url
+    assert "🌟" not in url
+
