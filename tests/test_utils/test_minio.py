@@ -1,4 +1,6 @@
 import io
+from unittest.mock import patch, MagicMock
+from app.utils.minio import upload_image_to_minio, get_image_url_from_minio
 from unittest.mock import patch
 from app.utils.minio import upload_image_to_minio,get_image_url_from_minio
 from app.utils.minio import upload_image_to_minio
@@ -47,6 +49,7 @@ def test_custom_bucket_config(mock_uuid):
         
         with patch("app.utils.minio.minio_client.put_object") as mock_put_object:
             dummy_file = io.BytesIO(b"dummy image data")
+            dummy_file.seek(0)
             dummy_file.seek(0)  
             content_type = "image/jpeg"
             filename = "test.jpg"
@@ -56,4 +59,24 @@ def test_custom_bucket_config(mock_uuid):
     assert "custom-minio.example.com" in url
     assert "custom-test-bucket" in url
     assert "test-custom-bucket-uuid.jpg" in url
+
+def test_different_url_formats():
+    """Test URL generation with different base URL formats"""
+    file_name = "example.jpg"
+
+    with patch("app.utils.minio.settings") as mock_settings1:
+        mock_settings1.minio_base_url = "https://minio.example.com/"
+        mock_settings1.minio_bucket_name = "test-bucket"
+        url1 = get_image_url_from_minio(file_name)
+
+    with patch("app.utils.minio.settings") as mock_settings2:
+        mock_settings2.minio_base_url = "https://minio.example.com"
+        mock_settings2.minio_bucket_name = "test-bucket"
+        url2 = get_image_url_from_minio(file_name)
+
+    expected_url = "https://minio.example.com/test-bucket/example.jpg"
+    assert url1 == expected_url
+    assert url2 == expected_url
+    assert "//test-bucket" not in url1
+    assert "//test-bucket" not in url2
 
