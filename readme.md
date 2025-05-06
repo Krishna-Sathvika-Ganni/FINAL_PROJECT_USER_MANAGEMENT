@@ -27,6 +27,7 @@
 - [DOCKERHUB DEPLOYMENT](#dockerhub-deployment)
 - [WORKING OF THE WHOLE PROJECT](#working-of-the-project)
 - [FINAL REMARKS](#final-remarks)
+- [DOCUMENTATION](#documentation)
 
 
 #### MY LEARNINGS FROM THIS COURSE
@@ -418,4 +419,9 @@ https://hub.docker.com/repository/docker/krisa1329/user_management/general
 #### FINAL REMARKS:
 
 This project was a significant milestone in my learning. It challenged me to debug, test, and apply DevOps concepts. The iterative development and QA process mimicked real-world processes and has enhanced my technical and collaboration skills.
+
+###### DOCUMENTATION:
+
+- [FINAL USER MANAGEMENT DOCUMENTATION ( .docx )](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/USER%20MANAGEMENT%20PROJECT%20DOCUMENTATION.docx)
+- [FINAL USER MANAGEMENT DOCUMENTATION ( .pdf )](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/USER%20MANAGEMENT%20PROJECT%20DOCUMENTATION.pdf)
 
