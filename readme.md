@@ -27,7 +27,7 @@
 - [🐳 DOCKERHUB DEPLOYMENT](#-dockerhub-deployment)
 - [🌱 WORKING OF THE WHOLE PROJECT](#-working-of-the-project)
 - [🏁 FINAL REMARKS](#-final-remarks)
-- [📋 DOCUMENTATION](#-documentation)
+- [📋 FULL DOCUMENTATION](#-full-documentation)
 
 
 #### 📝 MY LEARNINGS FROM THIS COURSE
@@ -79,7 +79,7 @@
 - It is also seen as inconsistent with API reaction and example values.
 - The Nickname gets overwritten during processing, leading to inconsistencies between input, stored data and output.
 
-**Link to the Issue Report with Screenshots:** [Mismatch of the Nickname Report]
+**Link to the Issue Report with Screenshots:** [Mismatch of the Nickname Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%94%84%20ISSUE%201.pdf)
 
 **Link to the Issue:** [Mismatch of the Nickname](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/2)
 
@@ -89,7 +89,7 @@
 - At the time of user registration, the email verification link was generated with a None user ID.
 - Thus the email link becomes invalid or incomplete.
 
-**Link to the Issue Report with Screenshots:** [User ID passed as None in the Verification Email Report]
+**Link to the Issue Report with Screenshots:** [User ID passed as None in the Verification Email Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%93%A7%20ISSUE%202.pdf)
 
 **Link to the Issue:** [User ID passed as None in the Verification Email](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/4)
 
@@ -99,7 +99,7 @@
 - User is getting a 400: Invalid or expired token for verification error.
 - The verification URL is also "None," i.e., token is not being generated, not being stored, or is not being placed properly inside email verification link.
 
-**Link to the Issue Report with Screenshots:** [Verification Token Missing or Invalid Report]
+**Link to the Issue Report with Screenshots:** [Verification Token Missing or Invalid Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%94%91%20ISSUE%203.pdf)
 
 **Link to the Issue:** [Verification Token Missing or Invalid](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/6)
 
@@ -109,7 +109,7 @@
 - Whenever an admin user's email was verified, their role was automatically downgraded to "Authenticated". 
 - This access control violation was resolved by fixing the buggy logic to preserve the original role.
 
-**Link to the Issue Report with Screenshots:** [Role Changes from Admin to Authenticated Report]
+**Link to the Issue Report with Screenshots:** [Role Changes from Admin to Authenticated Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%91%AE%20ISSUE%204.pdf)
 
 **Link to the Issue:** [Role Changes from Admin to Authenticated](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/8)
 
@@ -119,7 +119,7 @@
 - The login prompt asked for a "username" when the system was looking for an email. 
 - This inconsistency caused login errors and confusion.
 
-**Link to the Issue Report with Screenshots:** [Confusing Login Prompt Asking for "Username" Instead of "Email" Report]
+**Link to the Issue Report with Screenshots:** [Confusing Login Prompt Asking for "Username" Instead of "Email" Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%94%90%20ISSUE%205.pdf)
 
 **Link to the Issue:** [Confusing Login Prompt Asking for "Username" Instead of "Email"](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/15)
 
@@ -130,7 +130,7 @@
 - This was not secure and violated expected behavior. 
 - The validation was updated to permit only JPEG, PNG, or WEBP image file types.
 
-**Link to the Issue Report with Screenshots:** [Image Upload Endpoint Accepts All File Types Instead of Only Images Report]
+**Link to the Issue Report with Screenshots:** [Image Upload Endpoint Accepts All File Types Instead of Only Images Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%96%BCissue%206.pdf)
 
 **Link to the Issue:** [Image Upload Endpoint Accepts All File Types Instead of Only Images](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/13)
 
@@ -148,7 +148,7 @@
     - **Uniqueness:** UUID-based filename generation
     - **Accessbility:** Public image URLs for profile display 
 
-**Link to the Feature Report with working Screenshots:** [Profile Picture Upload with Minio Report]
+**Link to the Feature Report with working Screenshots:** [Profile Picture Upload with Minio Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%8C%84%20FEATURE.pdf)
 
 **Link to the Feature:** [Profile Picture Upload with Minio](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/11)
 
@@ -237,7 +237,7 @@
 
 #### 🌱 WORKING OF THE PROJECT:
 
-**Link to the Working of the Project Screenshots:** [ Working of the Project Report]
+**Link to the Working of the Project Screenshots:** [ Working of the Project Report](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/%F0%9F%8C%B1%20WORKING%20OF%20THE%20WHOLE%20PROJECT.pdf)
 
 
 #### 🏁 FINAL REMARKS:
@@ -245,8 +245,8 @@
 This project was a significant milestone in my learning. It challenged me to debug, test, and apply DevOps concepts. The iterative development and QA process mimicked real-world processes and has enhanced my technical and collaboration skills.
 
 
-###### 📋 DOCUMENTATION:
+###### 📋 FULL DOCUMENTATION:
 
-- [FINAL USER MANAGEMENT DOCUMENTATION ( .docx )]
-- [FINAL USER MANAGEMENT DOCUMENTATION ( .pdf )]
+- [FINAL USER MANAGEMENT DOCUMENTATION ( .docx )](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/FINAL%20USER%20MANAGEMENT%20PROJECT%20DOCUMENTATION.docx)
+- [FINAL USER MANAGEMENT DOCUMENTATION ( .pdf )](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/FINAL%20USER%20MANAGEMENT%20PROJECT%20DOCUMENTATION.pdf)
 
