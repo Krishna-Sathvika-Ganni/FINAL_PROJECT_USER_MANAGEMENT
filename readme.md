@@ -72,7 +72,7 @@
 #### 🐞 QA ISSUES:
 
 
-###### 🔄 ISSUE 1: Mismatch of the Nickname
+#### 🔄 ISSUE 1: Mismatch of the Nickname
 
 **Description:** 
 - The issue is that the Create User API doesn't match the nickname stored in the database input to the request.
@@ -83,7 +83,7 @@
 
 **Link to the Issue:** [Mismatch of the Nickname](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/2)
 
-###### 📧 ISSUE 2: User ID passed as None in the Verification Email
+#### 📧 ISSUE 2: User ID passed as None in the Verification Email
 
 **Description:**
 - At the time of user registration, the email verification link was generated with a None user ID.
@@ -93,7 +93,7 @@
 
 **Link to the Issue:** [User ID passed as None in the Verification Email](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/4)
 
-###### 🔑 ISSUE 3: Verification Token Missing or Invalid
+#### 🔑 ISSUE 3: Verification Token Missing or Invalid
 
 **Description:**
 - User is getting a 400: Invalid or expired token for verification error.
@@ -103,7 +103,7 @@
 
 **Link to the Issue:** [Verification Token Missing or Invalid](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/6)
 
-###### 👮 ISSUE 4: Role Changes from Admin to Authenticated
+#### 👮 ISSUE 4: Role Changes from Admin to Authenticated
 
 **Description:**
 - Whenever an admin user's email was verified, their role was automatically downgraded to "Authenticated". 
@@ -113,7 +113,7 @@
 
 **Link to the Issue:** [Role Changes from Admin to Authenticated](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/8)
 
-###### 🔐 ISSUE 5: Confusing Login Prompt Asking for "Username" Instead of "Email"
+#### 🔐 ISSUE 5: Confusing Login Prompt Asking for "Username" Instead of "Email"
 
 **Description:**
 - The login prompt asked for a "username" when the system was looking for an email. 
@@ -123,7 +123,7 @@
 
 **Link to the Issue:** [Confusing Login Prompt Asking for "Username" Instead of "Email"](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/15)
 
-###### 🖼️ ISSUE 6: Image Upload Endpoint Accepts All File Types Instead of Only Images
+#### 🖼️ ISSUE 6: Image Upload Endpoint Accepts All File Types Instead of Only Images
 
 **DESCRIPTION:**
 - The image upload endpoint was allowing any file type to be uploaded. 
@@ -155,70 +155,70 @@
 
 #### ✅ TEST CASES:
 
-###### 📤 TEST CASE 1: Basic Upload Functionality for Minio Image
+#### 📤 TEST CASE 1: Basic Upload Functionality for Minio Image
 
 **Description:**
 - Ensures that the core image upload to Minio is working and returns a successful image URL.
 
 **Link to the Test Case:** [Basic Upload Functionality for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/18)
 
-###### 🔗 TEST CASE 2: URL Generation for Minio Image 
+#### 🔗 TEST CASE 2: URL Generation for Minio Image 
 
 **Description:**
 - Ensures that the get_image_url_from_minio() function returns a valid and well-structured public image URL from a filename.
 
 **Link to the Test Case:** [URL Generation for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/19)
 
-###### 📁 TEST CASE 3: Long Filename Handling for Minio Image
+#### 📁 TEST CASE 3: Long Filename Handling for Minio Image
 
 **Description:**
 - Tests how the function behaves with extremely long filenames, to make sure they are correctly converted to UUID-based names.
 
 **Link to the Test Case:** [Long Filename Handling for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/20)
 
-###### 🗂️ TEST CASE 4: Custom Bucket Configuration for Minio Image
+#### 🗂️ TEST CASE 4: Custom Bucket Configuration for Minio Image
 
 **Description:**
 - Ensures that image uploads correctly utilize a custom bucket name if provided in the configuration.
 
 **Link to the Test Case:** [Custom Bucket Configuration for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/21)
 
-###### 📝 TEST CASE 5: URL Format Variations for Minio Image
+#### 📝 TEST CASE 5: URL Format Variations for Minio Image
 
 **Description:**
 - Tests whether different formats of base URLs (e.g., with and without trailing slashes) are properly handled in image URL generation.
 
 **Link to the Test Case:** [URL Format Variations for Minio Image](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/22)
 
-###### 📋 TEST CASE 6: List Users with Pagination
+#### 📋 TEST CASE 6: List Users with Pagination
 
 **Description:**
 - Tests the endpoint for retrieving users with limit and offset to make sure there is proper pagination of results.
 
 **Link to the Test Case:** [List Users with Pagination](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/23)
 
-###### ❌ TEST CASE 7: Create User with Missing Email Field
+#### ❌ TEST CASE 7: Create User with Missing Email Field
 
 **Description:**
 - Ensures that user registration fails when the required email field is not given, ensuring proper validation.
 
 **Link to the Test Case:** [Create User with Missing Email Field](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/25)
 
-###### 🔒 TEST CASE 8: Create User with Short Password
+#### 🔒 TEST CASE 8: Create User with Short Password
 
 **Description:**
 - Tests that passwords shorter than the allowed length are correctly rejected when a user registers.
 
 **Link to the Test Case:** [Create User with Short Password](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/26)
 
-###### 🚫 TEST CASE 9: Invalid Token Access
+#### 🚫 TEST CASE 9: Invalid Token Access
 
 **Description:**
 - Test that requests made with an invalid JWT token get blocked with correct unauthorized error.
 
 **Link to the Test Case:** [Invalid Token Access](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/issues/27)
 
-###### ⛔ TEST CASE 10: Unauthorized User Update Attempt
+#### ⛔ TEST CASE 10: Unauthorized User Update Attempt
 
 **Description:**
 - Prevents a non-admin user from changing the details of another user and ensures proper access control.
@@ -245,7 +245,7 @@
 This project was a significant milestone in my learning. It challenged me to debug, test, and apply DevOps concepts. The iterative development and QA process mimicked real-world processes and has enhanced my technical and collaboration skills.
 
 
-###### 📋 FULL DOCUMENTATION:
+#### 📋 FULL DOCUMENTATION:
 
 - [FINAL USER MANAGEMENT DOCUMENTATION ( .docx )](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/FINAL%20USER%20MANAGEMENT%20PROJECT%20DOCUMENTATION.docx)
 - [FINAL USER MANAGEMENT DOCUMENTATION ( .pdf )](https://github.com/Krishna-Sathvika-Ganni/FINAL_PROJECT_USER_MANAGEMENT/blob/main/FINAL%20USER%20MANAGEMENT%20PROJECT%20DOCUMENTATION.pdf)
